@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscrição — Noite HOT</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:Arial,Helvetica,sans-serif;color:#171717;
+  background:#b40000 url("fundo.png") center/cover fixed no-repeat;
+  min-height:100vh
+}
+body:before{content:"";position:fixed;inset:0;background:rgba(255,255,255,.16);pointer-events:none}
+.page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 16px;position:relative}
+.card{width:min(720px,100%);background:rgba(255,255,255,.96);border-radius:26px;box-shadow:0 24px 70px rgba(80,0,0,.28);overflow:hidden}
+.top{text-align:center;padding:24px 28px 18px;border-bottom:1px solid #eee}
+.eyebrow{color:#c60000;font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}
+h1{margin:0;font-size:clamp(27px,5vw,40px);line-height:1.05}
+.subtitle{margin:10px auto 0;max-width:520px;color:#5e5e5e;font-size:15px;line-height:1.45}
+.progress{height:6px;background:#eee}.progress span{display:block;height:100%;width:0;background:#c90000;transition:.3s}
+.content{padding:28px}
+.step{display:none;animation:fade .25s ease}.step.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.step-number{color:#c60000;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.question{font-size:clamp(22px,4vw,30px);font-weight:800;margin:0 0 9px}
+.help{color:#6c6c6c;font-size:14px;line-height:1.45;margin-bottom:22px}
+label{display:block;font-size:13px;font-weight:800;margin:0 0 8px}
+.field{margin-bottom:17px}
+input{width:100%;border:2px solid #e4e4e4;border-radius:14px;padding:15px 16px;font-size:16px;outline:none;background:#fff}
+input:focus{border-color:#c60000;box-shadow:0 0 0 4px rgba(198,0,0,.08)}
+.buttons{display:flex;gap:10px;margin-top:24px}
+button{border:0;border-radius:13px;padding:14px 19px;font-size:15px;font-weight:800;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
+.primary{flex:1;background:#c60000;color:white}.secondary{background:#f0f0f0;color:#333}
+.summary{background:#fafafa;border:1px solid #e7e7e7;border-radius:16px;padding:17px;margin-top:20px}
+.summary-row{display:flex;justify-content:space-between;gap:20px;padding:9px 0;border-bottom:1px solid #e9e9e9}
+.summary-row:last-child{border-bottom:0}.summary-row span:first-child{color:#777}.summary-row strong{text-align:right}
+.thanks{text-align:center;padding:14px 0 5px}.heart{width:64px;height:64px;display:grid;place-items:center;margin:0 auto 18px;border-radius:50%;background:#fff0f0;font-size:30px}
+.thanks h2{font-size:clamp(26px,5vw,38px);margin:0 0 10px}.thanks p{color:#626262;line-height:1.55;margin:0 auto;max-width:520px}
+.limit{margin:24px auto 0;padding:13px 15px;border-radius:14px;background:#fff5f5;border:1px solid #ffd0d0;color:#8a0000;font-weight:700;max-width:500px}
+.error{color:#a40000;background:#fff0f0;border:1px solid #ffc9c9;padding:12px 14px;border-radius:12px;font-size:13px;margin-top:14px;display:none}
+.footer{padding:15px 28px 22px;text-align:center;color:#8a8a8a;font-size:11px}
+@media(max-width:560px){.page{padding:12px}.card{border-radius:20px}.top{padding:21px 19px 16px}.content{padding:23px 19px}.footer{padding:12px 19px 19px}.buttons{flex-direction:column-reverse}.secondary,.primary{width:100%}}
+</style>
+</head>
+<body>
+<main class="page">
+<section class="card">
+<header class="top">
+<div class="eyebrow">Noite HOT</div>
+<h1>Inscrição do casal</h1>
+<p class="subtitle">Preencha os dados abaixo para confirmar a participação de vocês.</p>
+</header>
+<div class="progress"><span id="progress"></span></div>
+
+<div class="content">
+<section class="step active" data-step="1">
+<div class="step-number">Etapa 1 de 3</div>
+<h2 class="question">Quem faz parte do casal?</h2>
+<p class="help">Informe o nome dos dois participantes.</p>
+<div class="field"><label for="p1">Parceiro 1</label><input id="p1" type="text" placeholder="Digite o nome" maxlength="100"></div>
+<div class="field"><label for="p2">Parceiro 2</label><input id="p2" type="text" placeholder="Digite o nome" maxlength="100"></div>
+<div class="buttons"><button class="primary" onclick="nextStep()">Continuar</button></div>
+</section>
+
+<section class="step" data-step="2">
+<div class="step-number">Etapa 2 de 3</div>
+<h2 class="question">Qual geração vocês fazem parte?</h2>
+<p class="help">Escrevam apenas a geração da qual o casal faz parte.</p>
+<div class="field"><label for="geracao">Geração</label><input id="geracao" type="text" placeholder="Ex.: 1ª geração" maxlength="100"></div>
+<div class="buttons"><button class="secondary" onclick="prevStep()">Voltar</button><button class="primary" onclick="review()">Continuar</button></div>
+</section>
+
+<section class="step" data-step="3">
+<div class="step-number">Etapa 3 de 3</div>
+<h2 class="question">Confira os dados</h2>
+<p class="help">Está tudo certo? Então é só finalizar o preenchimento.</p>
+<div class="summary">
+<div class="summary-row"><span>Parceiro 1</span><strong id="sP1"></strong></div>
+<div class="summary-row"><span>Parceiro 2</span><strong id="sP2"></strong></div>
+<div class="summary-row"><span>Geração</span><strong id="sGeracao"></strong></div>
+</div>
+<div id="error" class="error"></div>
+<div class="buttons"><button class="secondary" onclick="prevStep()">Voltar</button><button id="finishButton" class="primary" onclick="finish()">Finalizar inscrição</button></div>
+</section>
+
+<section class="step" data-step="4">
+<div class="thanks">
+<div class="heart">♥</div>
+<h2>Obrigado pelo preenchimento!</h2>
+<p>A inscrição do casal foi registrada. Esperamos vocês na <strong>Noite HOT</strong>!</p>
+<div class="limit">As vagas são limitadas a <strong>60 casais</strong>.</div>
+</div>
+</section>
+</div>
+
+<footer class="footer">28 de setembro de 2026 · 19h · MBCI Brasiléia · Entrada gratuita</footer>
+</section>
+</main>
+
+<script>
+/* Depois de configurar o Google Sheets, cole aqui a URL do seu Google Apps Script. */
+const GOOGLE_SCRIPT_URL = "";
+
+let currentStep = 1;
+const $ = id => document.getElementById(id);
+
+function showStep(step){
+  document.querySelectorAll(".step").forEach(el=>el.classList.remove("active"));
+  document.querySelector(`[data-step="${step}"]`).classList.add("active");
+  currentStep=step;
+  $("progress").style.width=(Math.min(step,3)/3*100)+"%";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function nextStep(){
+  if(!$("p1").value.trim() || !$("p2").value.trim()){
+    alert("Preencha o nome dos dois participantes."); return;
+  }
+  showStep(2);
+}
+
+function prevStep(){ if(currentStep>1) showStep(currentStep-1); }
+
+function review(){
+  if(!$("geracao").value.trim()){
+    alert("Informe a geração da qual o casal faz parte."); return;
+  }
+  $("sP1").textContent=$("p1").value.trim();
+  $("sP2").textContent=$("p2").value.trim();
+  $("sGeracao").textContent=$("geracao").value.trim();
+  $("error").style.display="none";
+  showStep(3);
+}
+
+async function finish(){
+  const button=$("finishButton"), error=$("error");
+  button.disabled=true;
+  button.textContent="Registrando...";
+
+  const data={
+    parceiro1:$("p1").value.trim(),
+    parceiro2:$("p2").value.trim(),
+    geracao:$("geracao").value.trim(),
+    dataHora:new Date().toISOString()
+  };
+
+  try{
+    if(GOOGLE_SCRIPT_URL){
+      await fetch(GOOGLE_SCRIPT_URL,{
+        method:"POST",
+        mode:"no-cors",
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body:JSON.stringify(data)
+      });
+    }
+
+    localStorage.setItem("ultimaInscricaoNoiteHot",JSON.stringify(data));
+    showStep(4);
+  }catch(err){
+    console.error(err);
+    error.textContent="Não foi possível registrar a inscrição agora. Verifique sua conexão e tente novamente.";
+    error.style.display="block";
+    button.disabled=false;
+    button.textContent="Finalizar inscrição";
+  }
+}
+
+showStep(1);
+</script>
+</body>
+</html>
